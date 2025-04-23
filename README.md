@@ -1,87 +1,66 @@
-# Welcome to React Router!
+# FrontEnd-RelastosDePapel
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Frontend de la aplicación Relastos de Papel, una librería digital desarrollada con React y TypeScript.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Características
 
-## Features
+- Interfaz moderna y responsive
+- Navegación intuitiva
+- Catálogo de libros
+- Información de autores
+- Diseño con Material-UI
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Requisitos Previos
 
-## Getting Started
+- Node.js (versión 14 o superior)
+- npm (versión 6 o superior)
 
-### Installation
+## Instalación
 
-Install the dependencies:
+1. Clona el repositorio:
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd FrontEnd-RelastosDePapel
+```
 
+2. Instala las dependencias:
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
-
+3. Inicia el servidor de desarrollo:
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+La aplicación estará disponible en `http://localhost:3000`
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## Estructura del Proyecto
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+src/
+  ├── components/     # Componentes reutilizables
+  ├── pages/         # Páginas de la aplicación
+  ├── App.tsx        # Componente principal
+  └── main.tsx       # Punto de entrada
 ```
 
-## Styling
+## Tecnologías Utilizadas
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+- React
+- TypeScript
+- Material-UI
+- React Router
+- Vite
 
----
+## Contribución
 
-Built with ❤️ using React Router.
+1. Haz un fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT.
