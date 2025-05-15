@@ -50,7 +50,7 @@ export default function Footer() {
               component="img"
               src={logo}
               alt="Relatos de Papel"
-              sx={{ height: 60, mb: 2 }}
+              sx={{ height: 100, mb: 5 }}
             />
             <Typography variant="body2" color="text.secondary" paragraph>
               Tu librería de confianza, donde cada historia cobra vida.
