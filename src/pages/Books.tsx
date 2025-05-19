@@ -22,7 +22,7 @@ interface Book {
 }
 
 export default function Books() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

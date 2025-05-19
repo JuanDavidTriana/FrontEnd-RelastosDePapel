@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
 
   return (
     <AppBar position="static">

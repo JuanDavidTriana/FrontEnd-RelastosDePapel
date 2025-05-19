@@ -11,7 +11,6 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
   TextField,
   Stepper,
   Step,
@@ -19,7 +18,6 @@ import {
   IconButton,
 } from '@mui/material';
 import {
-  Delete as DeleteIcon,
   Add as AddIcon,
   Remove as RemoveIcon,
   CreditCard as CreditCardIcon,

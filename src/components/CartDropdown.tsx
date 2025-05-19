@@ -6,7 +6,6 @@ import {
   IconButton,
   Button,
   Divider,
-  Badge,
 } from '@mui/material';
 import {
   Delete as DeleteIcon,

@@ -5,14 +5,16 @@ import {
   Typography,
   Paper,
   Grid,
-  Button,
   Divider,
   Chip,
 } from '@mui/material';
 import {
-  Receipt as ReceiptIcon,
   LocalShipping as ShippingIcon,
   CheckCircle as CheckCircleIcon,
+  Pending as PendingIcon,
+  HourglassEmpty as ProcessingIcon,
+  Cancel as CancelIcon,
+  Help as HelpIcon,
 } from '@mui/icons-material';
 import { useOrderHistory } from '../hooks/useOrderHistory';
 import Header from '../components/Header';
@@ -34,16 +36,20 @@ const OrderHistoryPage: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: string): React.ReactElement => {
     switch (status) {
-      case 'completada':
-        return <CheckCircleIcon />;
-      case 'en proceso':
+      case 'pending':
+        return <PendingIcon />;
+      case 'processing':
+        return <ProcessingIcon />;
+      case 'shipped':
         return <ShippingIcon />;
-      case 'entregada':
-        return <ReceiptIcon />;
+      case 'delivered':
+        return <CheckCircleIcon />;
+      case 'cancelled':
+        return <CancelIcon />;
       default:
-        return null;
+        return <HelpIcon />;
     }
   };
 

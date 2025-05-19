@@ -18,7 +18,7 @@ interface Author {
 }
 
 export default function Authors() {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const [authors] = useState<Author[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
