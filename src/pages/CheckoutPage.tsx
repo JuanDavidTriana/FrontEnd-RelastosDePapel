@@ -31,7 +31,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const steps = ['Resumen de compra', 'Método de pago', 'Confirmación'];
 
 const CheckoutPage: React.FC = () => {
-  const { items, removeFromCart, updateQuantity, total, clearCart } = useCart();
+  const { items, total, clearCart } = useCart();
   const { addOrder } = useOrderHistory();
   const [activeStep, setActiveStep] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('credit');
@@ -390,8 +390,7 @@ const CheckoutPage: React.FC = () => {
               <Button
                 variant="contained"
                 onClick={() => {
-                  // Generar ID de orden y guardar en historial
-                  const newOrderId = Math.random().toString(36).substr(2, 9).toUpperCase();
+                  // Guardar en historial
                   addOrder({
                     items: items.map(item => ({
                       id: item.id,
