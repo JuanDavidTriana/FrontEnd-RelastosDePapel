@@ -23,8 +23,7 @@
 
     /* Additional configurations */
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "types": ["node", "react", "react-dom"]
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
