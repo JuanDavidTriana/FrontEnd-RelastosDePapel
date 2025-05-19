@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -15,11 +15,8 @@ import {
   Stepper,
   Step,
   StepLabel,
-  IconButton,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  Remove as RemoveIcon,
   CreditCard as CreditCardIcon,
   AccountBalance as BankIcon,
   Payment as PaymentIcon,
@@ -42,7 +39,6 @@ const CheckoutPage: React.FC = () => {
   const [cardName, setCardName] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCVC, setCardCVC] = useState('');
-  const [orderId, setOrderId] = useState<string | null>(null);
   const [shippingName, setShippingName] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
   const [shippingPhone, setShippingPhone] = useState('');
@@ -79,15 +75,6 @@ const CheckoutPage: React.FC = () => {
     );
   }
 
-  const handleQuantityChange = (bookId: string, currentQuantity: number, change: number) => {
-    const newQuantity = currentQuantity + change;
-    if (newQuantity > 0) {
-      updateQuantity(bookId, newQuantity);
-    } else {
-      removeFromCart(bookId);
-    }
-  };
-
   const handleNext = () => {
     // Validación para el paso 1 (dirección de envío)
     if (activeStep === 0) {
@@ -114,33 +101,6 @@ const CheckoutPage: React.FC = () => {
 
   const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentMethod(event.target.value);
-  };
-
-  const handleSubmit = () => {
-    // Generar ID de orden
-    const newOrderId = Math.random().toString(36).substr(2, 9).toUpperCase();
-    setOrderId(newOrderId);
-
-    // Añadir orden al historial
-    addOrder({
-      items: items.map(item => ({
-        id: item.id,
-        title: item.title,
-        author: item.author,
-        price: item.price,
-        quantity: item.quantity,
-        imageUrl: item.imageUrl,
-      })),
-      total,
-      status: 'completada',
-      paymentMethod: paymentMethod === 'credit' ? 'Tarjeta de crédito' :
-                    paymentMethod === 'debit' ? 'Tarjeta de débito' :
-                    'Transferencia bancaria',
-    });
-
-    // Limpiar carrito
-    clearCart();
-    handleNext();
   };
 
   const renderStepContent = (step: number) => {
@@ -432,7 +392,6 @@ const CheckoutPage: React.FC = () => {
                 onClick={() => {
                   // Generar ID de orden y guardar en historial
                   const newOrderId = Math.random().toString(36).substr(2, 9).toUpperCase();
-                  setOrderId(newOrderId);
                   addOrder({
                     items: items.map(item => ({
                       id: item.id,
