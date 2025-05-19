@@ -7,6 +7,7 @@ import {
   Grid,
   Divider,
   Chip,
+  Button,
 } from '@mui/material';
 import {
   LocalShipping as ShippingIcon,
@@ -19,6 +20,7 @@ import {
 import { useOrderHistory } from '../hooks/useOrderHistory';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const OrderHistoryPage: React.FC = () => {
   const { orders } = useOrderHistory();
@@ -90,6 +92,16 @@ const OrderHistoryPage: React.FC = () => {
           >
             Historial de Compras
           </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+            <Button
+              variant="contained"
+              component={Link}
+              to="/"
+              sx={{ px: 4 }}
+            >
+              Volver al menú
+            </Button>
+          </Box>
 
           {orders.length === 0 ? (
             <Paper sx={{ p: 4, textAlign: 'center' }}>

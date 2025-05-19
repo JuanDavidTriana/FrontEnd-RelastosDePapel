@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -29,7 +29,7 @@ import { useCart } from '../hooks/useCart';
 import { useOrderHistory } from '../hooks/useOrderHistory';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const steps = ['Resumen de compra', 'Método de pago', 'Confirmación'];
 
@@ -43,6 +43,41 @@ const CheckoutPage: React.FC = () => {
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCVC, setCardCVC] = useState('');
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [shippingName, setShippingName] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [shippingPhone, setShippingPhone] = useState('');
+  const [formError, setFormError] = useState('');
+  const navigate = useNavigate();
+
+  // Si el carrito está vacío, mostrar mensaje y botón para volver al catálogo
+  if (items.length === 0 && activeStep === 0) {
+    return (
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <Box sx={{ flex: 1, bgcolor: 'background.default', py: 8 }}>
+          <Container maxWidth="sm">
+            <Paper sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h5" gutterBottom>
+                Tu carrito está vacío
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Agrega productos para continuar con el proceso de compra.
+              </Typography>
+              <Button
+                variant="contained"
+                component={Link}
+                to="/catalogo"
+                sx={{ mt: 2 }}
+              >
+                Volver al catálogo
+              </Button>
+            </Paper>
+          </Container>
+        </Box>
+        <Footer />
+      </Box>
+    );
+  }
 
   const handleQuantityChange = (bookId: string, currentQuantity: number, change: number) => {
     const newQuantity = currentQuantity + change;
@@ -54,6 +89,22 @@ const CheckoutPage: React.FC = () => {
   };
 
   const handleNext = () => {
+    // Validación para el paso 1 (dirección de envío)
+    if (activeStep === 0) {
+      if (!shippingName || !shippingAddress || !shippingPhone) {
+        setFormError('Por favor completa todos los campos de dirección de envío.');
+        return;
+      }
+      setFormError('');
+    }
+    // Validación para el paso 2 (pago)
+    if (activeStep === 1 && paymentMethod !== 'transfer') {
+      if (!cardNumber || !cardName || !cardExpiry || !cardCVC) {
+        setFormError('Por favor completa todos los campos de pago.');
+        return;
+      }
+      setFormError('');
+    }
     setActiveStep((prevStep) => prevStep + 1);
   };
 
@@ -103,49 +154,62 @@ const CheckoutPage: React.FC = () => {
                   Productos en el carrito
                 </Typography>
                 {items.map((item) => (
-                  <Box key={item.id} sx={{ mb: 2 }}>
-                    <Grid container spacing={2} alignItems="center">
-                      <Grid item xs={3} sm={2}>
-                        <Box
-                          component="img"
-                          src={item.imageUrl}
-                          alt={item.title}
-                          sx={{
-                            width: '100%',
-                            height: 'auto',
-                            borderRadius: 1,
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={9} sm={10}>
-                        <Typography variant="subtitle1">{item.title}</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.author}
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleQuantityChange(item.id, item.quantity, -1)}
-                          >
-                            <RemoveIcon fontSize="small" />
-                          </IconButton>
-                          <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleQuantityChange(item.id, item.quantity, 1)}
-                          >
-                            <AddIcon fontSize="small" />
-                          </IconButton>
-                          <Typography sx={{ ml: 2 }} color="primary.main">
-                            ${(item.price * item.quantity).toFixed(2)}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                    <Divider sx={{ my: 2 }} />
+                  <Box key={item.id} sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box
+                      component="img"
+                      src={item.imageUrl}
+                      alt={item.title}
+                      sx={{ width: 60, height: 80, objectFit: 'cover', borderRadius: 1, boxShadow: 1 }}
+                    />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="subtitle1">{item.title}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {item.author}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Cantidad: {item.quantity}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body1" color="primary.main" sx={{ minWidth: 80, textAlign: 'right' }}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </Typography>
                   </Box>
                 ))}
               </Paper>
+              <Paper sx={{ p: 3, mt: 2 }}>
+                <Typography variant="h6" gutterBottom sx={{ color: 'primary.main' }}>
+                  Dirección de envío
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Nombre completo"
+                      value={shippingName}
+                      onChange={(e) => setShippingName(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Teléfono"
+                      value={shippingPhone}
+                      onChange={(e) => setShippingPhone(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Dirección"
+                      value={shippingAddress}
+                      onChange={(e) => setShippingAddress(e.target.value)}
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+              {formError && (
+                <Typography color="error" sx={{ mt: 2 }}>{formError}</Typography>
+              )}
             </Grid>
             <Grid item xs={12} md={4}>
               <Paper sx={{ p: 3 }}>
@@ -273,6 +337,9 @@ const CheckoutPage: React.FC = () => {
                 </Typography>
               </Box>
             )}
+            {formError && (
+              <Typography color="error" sx={{ mt: 2 }}>{formError}</Typography>
+            )}
           </Paper>
         );
 
@@ -287,29 +354,16 @@ const CheckoutPage: React.FC = () => {
               Tu pedido ha sido procesado correctamente.
             </Typography>
             <Typography variant="body1" paragraph>
-              Número de orden: #{orderId}
-            </Typography>
-            <Typography variant="body1" paragraph>
               Te enviaremos un correo electrónico con los detalles de tu compra.
             </Typography>
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center', gap: 2 }}>
-              <Button
-                variant="contained"
-                component={Link}
-                to="/"
-                sx={{ px: 4 }}
-              >
-                Volver al inicio
-              </Button>
-              <Button
-                variant="outlined"
-                component={Link}
-                to="/historial"
-                sx={{ px: 4 }}
-              >
-                Ver historial de compras
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              component={Link}
+              to="/historial"
+              sx={{ mt: 4, px: 4 }}
+            >
+              Ir al historial de compras
+            </Button>
           </Paper>
         );
 
@@ -363,13 +417,45 @@ const CheckoutPage: React.FC = () => {
             >
               Atrás
             </Button>
-            <Button
-              variant="contained"
-              onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
-              sx={{ ml: 1 }}
-            >
-              {activeStep === steps.length - 1 ? 'Finalizar compra' : 'Siguiente'}
-            </Button>
+            {activeStep < steps.length - 1 && (
+              <Button
+                variant="contained"
+                onClick={handleNext}
+                sx={{ ml: 1 }}
+              >
+                Siguiente
+              </Button>
+            )}
+            {activeStep === steps.length - 1 && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  // Generar ID de orden y guardar en historial
+                  const newOrderId = Math.random().toString(36).substr(2, 9).toUpperCase();
+                  setOrderId(newOrderId);
+                  addOrder({
+                    items: items.map(item => ({
+                      id: item.id,
+                      title: item.title,
+                      author: item.author,
+                      price: item.price,
+                      quantity: item.quantity,
+                      imageUrl: item.imageUrl,
+                    })),
+                    total,
+                    status: 'completada',
+                    paymentMethod: paymentMethod === 'credit' ? 'Tarjeta de crédito' :
+                                  paymentMethod === 'debit' ? 'Tarjeta de débito' :
+                                  'Transferencia bancaria',
+                  });
+                  clearCart();
+                  navigate('/historial');
+                }}
+                sx={{ ml: 1 }}
+              >
+                Finalizar compra
+              </Button>
+            )}
           </Box>
         </Container>
       </Box>

@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, ReactNode } from 'react';
+import { useState, useContext, createContext, ReactNode, useEffect } from 'react';
 
 interface OrderItem {
   id: string;
@@ -27,7 +27,14 @@ interface OrderHistoryContextType {
 const OrderHistoryContext = createContext<OrderHistoryContextType | undefined>(undefined);
 
 export const OrderHistoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<Order[]>(() => {
+    const stored = localStorage.getItem('orderHistory');
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('orderHistory', JSON.stringify(orders));
+  }, [orders]);
 
   const addOrder = (orderData: Omit<Order, 'id' | 'date'>) => {
     const newOrder: Order = {
