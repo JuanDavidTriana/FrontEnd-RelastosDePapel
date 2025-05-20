@@ -2,57 +2,16 @@ import {
   AppBar, 
   Toolbar, 
   Box, 
-  InputBase,
   IconButton,
   styled,
   Badge,
 } from '@mui/material';
-import { Search as SearchIcon, ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
+import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material';
 import logo from '../assets/images/logoRelatosDePapel.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import CartDropdown from './CartDropdown';
 import { useCart } from '../hooks/useCart';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#FDF6F2',
-  '&:hover': {
-    backgroundColor: '#f5e6e0',
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: theme.palette.primary.main,
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '40ch',
-    },
-  },
-}));
 
 const NavLink = styled(Link)(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -115,19 +74,6 @@ export default function Header() {
             }}
           />
         </Box>
-
-        <Search sx={{ 
-          maxWidth: { xs: '200px', sm: '300px', md: '400px' },
-          mx: { xs: 1, md: 2 }
-        }}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Buscar libros, autores.."
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </Search>
 
         <Box sx={{ 
           display: 'flex', 
